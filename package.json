@@ -1,0 +1,16 @@
+{
+  "name": "pubg-bp-collector-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "apiTest.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "node-fetch": "^2.4.1"
+  }
+}
