@@ -2,7 +2,7 @@ require('dotenv').config();
 const R = require('ramda');
 const { getMatchData, getPlayersMatches, pluckMatchData } = require('./pubgAPI');
 const { getNewBPRecords, getSeenMatches } = require('./firebase');
-const { mapMatchesToBPRecord } = require('./functions');
+const { mapRecordsToMatches } = require('./functions');
 
 const getNewMatchesIds = async () => {
   const [ seenMatches, playersMatches ] = await Promise.all([
@@ -20,13 +20,14 @@ const processNewBPRecords = async () => {
     return "No new records found, finishing";
   }
   console.log(`${newBPRecords.length} new records found, processing...`);
-  const newMatchesIds = await getNewMatchesIds();
-  const newMatches = [];
-  for(let i = 0; i < newMatchesIds.length; i++) {
-    const tmp = await getMatchData(newMatchesIds[i]);
-    newMatches.push(pluckMatchData(tmp, process.env.PLAYER_ID));
+  const playerMatches = await getPlayersMatches(process.env.PLAYER_ID);
+  const matchesIds = R.pluck("id")(playerMatches);
+  const matches = [];
+  for(let i = 0; i < matchesIds.length; i++) {
+    const tmp = await getMatchData(matchesIds[i]);
+    matches.push(pluckMatchData(tmp, process.env.PLAYER_ID));
   }
-  const bpRecordsWithMatches = newBPRecords.map(mapMatchesToBPRecord(newMatches));
+  const res = mapRecordsToMatches(newBPRecords, matches);
 };
 
 processNewBPRecords().then((msg) => console.log("Done!", msg));
