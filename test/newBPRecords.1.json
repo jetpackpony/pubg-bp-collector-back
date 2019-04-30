@@ -1,0 +1,34 @@
+[
+  {
+    "createdAt": "2019-04-29T21:48:00.203Z",
+    "rankBP": 133,
+    "killBP": 13,
+    "attachedToMatch": false,
+    "hitBP": 26,
+    "id": "Buo79Tm1NGh5zYaTMM6j"
+  },
+  {
+    "attachedToMatch": false,
+    "hitBP": 0,
+    "createdAt": "2019-04-29T21:21:31.822Z",
+    "rankBP": 167,
+    "killBP": 0,
+    "id": "iAzSlamPscq72EBUDU9y"
+  },
+  {
+    "createdAt": "2019-04-29T22:11:14.393Z",
+    "rankBP": 161,
+    "killBP": 0,
+    "attachedToMatch": false,
+    "hitBP": 0,
+    "id": "uYrr4V5fDdwpRyg6Sryp"
+  },
+  {
+    "attachedToMatch": false,
+    "hitBP": 7,
+    "createdAt": "2019-04-29T22:45:07.415Z",
+    "rankBP": 270,
+    "killBP": 0,
+    "id": "wstMDRXxRtw9WJvrsKeM"
+  }
+]

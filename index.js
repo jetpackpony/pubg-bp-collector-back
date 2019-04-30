@@ -1,17 +1,32 @@
 require('dotenv').config();
-const { getMatchData, getPlayerData } = require('./pubgAPI');
-const firebase = require('./firebase');
+const R = require('ramda');
+const { getMatchData, getPlayersMatches, pluckMatchData } = require('./pubgAPI');
+const { getNewBPRecords, getSeenMatches } = require('./firebase');
+const { mapMatchesToBPRecord } = require('./functions');
 
-//firebase.addToCollection("newTests", { testme: "test" });
-
-//getMatchData("ff3728b8-c18a-4d33-ab70-247caabaff4b").then((json) => console.log(json));
-//getPlayerData(process.env.PLAYER_ID).then((json) => console.log(json));
-
-/*
-const test = async () => {
-  const player = await getPlayerData(process.env.PLAYER_ID);
-  return player.data.relationships.matches.data;
+const getNewMatchesIds = async () => {
+  const [ seenMatches, playersMatches ] = await Promise.all([
+    getSeenMatches(),
+    getPlayersMatches(process.env.PLAYER_ID)
+  ]);
+  const seenIds = R.pluck("matchId")(seenMatches);
+  const allIds = R.pluck("id")(playersMatches);
+  return R.without(seenIds, allIds);
 };
 
-test().then((json) => console.log("Got JSON!", json));
-*/
+const processNewBPRecords = async () => {
+  const newBPRecords = await getNewBPRecords();
+  if (newBPRecords.length <= 0) {
+    return "No new records found, finishing";
+  }
+  console.log(`${newBPRecords.length} new records found, processing...`);
+  const newMatchesIds = await getNewMatchesIds();
+  const newMatches = [];
+  for(let i = 0; i < newMatchesIds.length; i++) {
+    const tmp = await getMatchData(newMatchesIds[i]);
+    newMatches.push(pluckMatchData(tmp, process.env.PLAYER_ID));
+  }
+  const bpRecordsWithMatches = newBPRecords.map(mapMatchesToBPRecord(newMatches));
+};
+
+processNewBPRecords().then((msg) => console.log("Done!", msg));

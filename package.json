@@ -4,7 +4,8 @@
   "description": "",
   "main": "apiTest.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "testbrk": "mocha --inspect-brk"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +13,12 @@
   "dependencies": {
     "dotenv": "^7.0.0",
     "firebase-admin": "^7.3.0",
-    "node-fetch": "^2.4.1"
+    "moment": "^2.24.0",
+    "node-fetch": "^2.4.1",
+    "ramda": "^0.26.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4"
   }
 }
