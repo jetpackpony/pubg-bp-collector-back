@@ -1,18 +1,8 @@
 require('dotenv').config();
 const R = require('ramda');
 const { getMatchData, getPlayersMatches, pluckMatchData } = require('./pubgAPI');
-const { getNewBPRecords, getSeenMatches, writeMatchedData } = require('./firebase');
+const { getNewBPRecords, writeMatchedData } = require('./firebase');
 const { mapRecordsToMatches } = require('./functions');
-
-const getNewMatchesIds = async () => {
-  const [ seenMatches, playersMatches ] = await Promise.all([
-    getSeenMatches(),
-    getPlayersMatches(process.env.PLAYER_ID)
-  ]);
-  const seenIds = R.pluck("matchId")(seenMatches);
-  const allIds = R.pluck("id")(playersMatches);
-  return R.without(seenIds, allIds);
-};
 
 const processNewBPRecords = async () => {
   const newBPRecords = await getNewBPRecords();

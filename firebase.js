@@ -28,15 +28,6 @@ const getNewBPRecords = () => {
     });
 };
 
-const getSeenMatches = () => {
-  return db.collection("seenMatches").get()
-    .then((snapshot) => {
-      const res = [];
-      snapshot.forEach(doc => res.push(doc.data()));
-      return res;
-    });
-};
-
 const writeMatchedData = (matches) => {
   const batch = db.batch();
 
@@ -54,6 +45,5 @@ const writeMatchedData = (matches) => {
 module.exports = {
   addToCollection,
   getNewBPRecords,
-  getSeenMatches,
   writeMatchedData
 };
